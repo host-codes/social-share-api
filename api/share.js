@@ -17,7 +17,7 @@ export default async function handler(req, res) {
       return res.status(404).send('Post not found');
     }
 
-    const myPostUrl = `https://inshort.a-web.online/detail.html?id=${id}`;
+    const myPostUrl = `https://proquiz.a-web.online/p/detail.html?id=${id}`;
     const { Title, Description, Image } = post;
 
     // Send HTML with dynamic meta tags
