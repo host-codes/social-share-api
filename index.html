@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Feed</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 1rem; }
+    .card { border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; }
+    .card img { width: 100%; max-height: 200px; object-fit: cover; }
+    .card h3 { margin: 0.5rem 0; }
+    .pagination { margin-top: 1rem; display: flex; gap: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Latest News</h1>
+  <div id="news-container"></div>
+  <div class="pagination">
+    <button id="prev">Prev</button>
+    <button id="next">Next</button>
+  </div>
+
+  <script>
+    const apiUrl = "https://script.google.com/macros/s/AKfycbw-HaIeROJ04q9T0_kpn6KNJfY-4Y3YBGKU2OFs8jTYmSPqGGw1qIkjuqz5-SfGT_bOmg/exec";
+    let currentPage = 1;
+    const perPage = 10;
+
+    async function loadPosts() {
+      const res = await fetch(apiUrl);
+      const data = await res.json();
+      const posts = data.user;
+      const container = document.getElementById("news-container");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * perPage;
+      const end = start + perPage;
+      const currentPosts = posts.slice(start, end);
+
+      currentPosts.forEach((post, i) => {
+        const detailLink = `detail.html?id=${start + i}`;
+        container.innerHTML += `
+          <div class="card">
+            <img src="${post.Image}" alt="${post.Image}">
+            <h3><a href="${detailLink}">${post.Title}</a></h3>
+            <p>${post.Description.slice(0, 100)}...</p>
+          </div>`;
+      });
+    }
+
+    document.getElementById("prev").onclick = () => {
+      if (currentPage > 1) {
+        currentPage--;
+        loadPosts();
+      }
+    };
+
+    document.getElementById("next").onclick = () => {
+      currentPage++;
+      loadPosts();
+    };
+
+    loadPosts();
+  </script>
+</body>
+</html>

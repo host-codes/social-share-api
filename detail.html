@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Post Detail</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 1rem; }
+    img { max-width: 100%; border-radius: 8px; margin-bottom: 1rem; }
+    .share-buttons a { margin-right: 10px; }
+  </style>
+</head>
+<body>
+  <div id="post"></div>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const postId = params.get("id");
+
+    fetch("https://script.google.com/macros/s/AKfycbw-HaIeROJ04q9T0_kpn6KNJfY-4Y3YBGKU2OFs8jTYmSPqGGw1qIkjuqz5-SfGT_bOmg/exec")
+      .then(res => res.json())
+      .then(data => {
+        const post = data.user[postId];
+       // const postURL = `https://proquiz.a-web.online/p/detail.html?id=${postId}`;
+        //const shareBase = `https://social-share-api.vercel.app/api/share?id=${postId
+		
+		
+		const postURL = `https://shortnews.a-web.online/detail.html?id=${postId}`;
+        const shareBase = `https://shortnews.a-web.onlin/api/share?id=${postId}`;
+		
+        document.getElementById("post").innerHTML = `
+          <h1>${post.Title}</h1>
+          <img src="${post.Image}" alt="">
+          <p>${post.Description}</p>
+          <p><strong>Source:</strong> <a href="${post.URL}" target="_blank">${post.Source}</a></p>
+          <h3>Share this article:</h3>
+          <div class="share-buttons">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareBase)}" target="_blank">Facebook</a>
+            <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(shareBase)}&text=${encodeURIComponent(post.Title)}" target="_blank">Twitter</a>
+            <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareBase)}" target="_blank">LinkedIn</a>
+            <a href="https://t.me/share/url?url=${encodeURIComponent(shareBase)}&text=${encodeURIComponent(post.Title)}" target="_blank">Telegram</a>
+            <a href="https://wa.me/?text=${encodeURIComponent(post.Title)}%20${encodeURIComponent(shareBase)}" target="_blank">WhatsApp</a>
+          </div>
+        `;
+      });
+  </script>
+</body>
+</html>
