@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loading Share...</title>
+
+  <!-- Default OG tags, will be replaced by JS -->
+  <meta property="og:title" content="Loading...">
+  <meta property="og:description" content="Loading...">
+  <meta property="og:image" content="https://proquiz.a-web.online/default.jpg">
+  <meta property="og:url" content="https://proquiz.a-web.online">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Loading...">
+  <meta name="twitter:description" content="Loading...">
+  <meta name="twitter:image" content="https://proquiz.a-web.online/default.jpg">
+</head>
+<body>
+  <p>Redirecting to the post...</p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    fetch("https://script.google.com/macros/s/AKfycbw-HaIeROJ04q9T0_kpn6KNJfY-4Y3YBGKU2OFs8jTYmSPqGGw1qIkjuqz5-SfGT_bOmg/exec")
+      .then((res) => res.json())
+      .then((data) => {
+        const post = data.user[id];
+        if (!post) return;
+
+        // Replace meta tags dynamically
+        const setMeta = (property, content) => {
+          let tag = document.querySelector(`meta[property='${property}']`) || document.querySelector(`meta[name='${property}']`);
+          if (tag) tag.setAttribute("content", content);
+        };
+
+        setMeta("og:title", post.Title);
+        setMeta("og:description", post.Description);
+        setMeta("og:image", post.Image);
+        setMeta("og:url", `https://proquiz.a-web.online/detail.html?id=${id}`);
+
+        setMeta("twitter:title", post.Title);
+        setMeta("twitter:description", post.Description);
+        setMeta("twitter:image", post.Image);
+
+        // Redirect to your actual post page
+        window.location.href = `https://proquiz.a-web.online/detail.html?id=${id}`;
+      });
+  </script>
+</body>
+</html>
